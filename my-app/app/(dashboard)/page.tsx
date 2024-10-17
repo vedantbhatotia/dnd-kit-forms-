@@ -1,7 +1,4 @@
-function Home(){
-    return(
-        <>
-        <h1>Dashboard</h1>
-        </>
-    )
+function Page() {
+    return <div>Main Page</div>
 }
+export default Page
