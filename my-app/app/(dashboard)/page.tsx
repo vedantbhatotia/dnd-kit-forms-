@@ -17,7 +17,9 @@ function Page() {
         <Separator className="my-6"></Separator>
         <h2 className="text-4xl font-bold col-span-2">Your Forms</h2>
         <Separator className="my-6"></Separator>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         <CreateFormButton></CreateFormButton>
+        </div>
     </div>
 }
 export default Page

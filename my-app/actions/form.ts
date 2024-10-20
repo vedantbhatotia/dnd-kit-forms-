@@ -1,8 +1,8 @@
 "use server";
-
 import prisma from "@/lib/prisma";
 import { currentUser } from "@clerk/nextjs/server";
-
+import { FormSchema } from "@/schemas/form"
+ import { formSchema } from "@/schemas/form";
 async function GetFormStats(){
     const user = await currentUser();
     if(!user){
@@ -34,4 +34,34 @@ async function GetFormStats(){
         }
     }
 }
+async function CreateForm(data:FormSchema){
+    const validatedData = formSchema.safeParse(data);
+    if(!validatedData.success){
+        return {
+            error:"Invalid data"
+        }
+    }else{
+        const user = await currentUser();
+        if(!user){
+            return {
+                error:"User not found"
+            }
+        }else{
+            const form = await prisma.form.create({
+                data:{
+                    name:data.name,
+                    description:data.description,
+                    userId:user.id,
+                }
+            })
+            if(!form){
+                return {
+                    error:"Form not created"
+                }
+            }
+            return form.id
+        }
+    }
+}
+export {CreateForm}
 export {GetFormStats}
