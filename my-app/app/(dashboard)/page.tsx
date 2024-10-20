@@ -7,6 +7,8 @@ import {TbArrowBounce} from "react-icons/tb"
 import { Skeleton } from "@/components/ui/skeleton";
 import { Suspense } from "react";
 import { Separator } from "@radix-ui/react-context-menu";
+// import {CreateFormButton} from "@/components/CreateFormButton";
+import CreateFormButton from "@/components/CreateFormButton";
 function Page() {
     return <div className="container pt-4">
         <Suspense fallback={<StatsCards loading={true}></StatsCards>}>
@@ -15,6 +17,7 @@ function Page() {
         <Separator className="my-6"></Separator>
         <h2 className="text-4xl font-bold col-span-2">Your Forms</h2>
         <Separator className="my-6"></Separator>
+        <CreateFormButton></CreateFormButton>
     </div>
 }
 export default Page
