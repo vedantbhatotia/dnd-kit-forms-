@@ -3,7 +3,6 @@ import prisma from "@/lib/prisma";
 import { currentUser } from "@clerk/nextjs/server";
 import { FormSchema } from "@/schemas/form"
  import { formSchema } from "@/schemas/form";
-//  import UserNotFoun
 async function GetFormStats(){
     const user = await currentUser();
     if(!user){
@@ -82,6 +81,23 @@ async function GetForm(){
         })
     }
 }
+async function GetFormById(id:number){
+    const user = await currentUser();
+    if(!user){
+        return {
+            error:"User not found"
+        }
+    }
+    else{
+        return await prisma.form.findFirst({
+            where:{
+                id:id,
+                userId:user.id
+            }
+        })
+    }
+}
+export {GetFormById}
 export {GetForm}
 export {CreateForm}
 export {GetFormStats}

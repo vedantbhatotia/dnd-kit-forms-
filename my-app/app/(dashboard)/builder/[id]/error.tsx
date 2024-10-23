@@ -8,3 +8,4 @@ function ErrorPage({error}:{error:Error}){
     )
 
 }
+export default ErrorPage;
