@@ -1,9 +1,10 @@
-import { Card, CardHeader, CardContent, CardTitle, CardDescription } from "@/components/ui/card";
+import { Card, CardHeader, CardContent, CardTitle, CardDescription, CardFooter } from "@/components/ui/card";
 import { GetFormStats } from "../../actions/form";
 import { LuView } from "react-icons/lu";
-import { FaWpforms } from "react-icons/fa";
+import { FaEdit, FaWpforms } from "react-icons/fa";
 import { HiCursorClick } from "react-icons/hi";
 import { TbArrowBounce } from "react-icons/tb";
+import { BiRightArrowAlt } from "react-icons/bi";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Suspense } from "react";
 import { Separator } from "@radix-ui/react-context-menu";
@@ -12,6 +13,7 @@ import CreateFormButton from "@/components/CreateFormButton";
 import { Form } from "@prisma/client";
 import { Badge } from "@/components/ui/badge";
 import { formatDistance } from "date-fns";
+import { Button } from "@/components/ui/button";
 import Link from "next/link";
 function Page() {
   return (
@@ -160,46 +162,63 @@ function FormCard({ form }: { form: Form }) {
       shareUrl 
     } = form;
   
-    return (
-      <Card className="shadow-md  hover:shadow-lg transition-shadow duration-200">
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2 justify-between">
-            <span className="truncate font-bold text-xl">{name}</span>
-            {published ? (
-              <Badge className="bg-green-500 text-white">Published</Badge>
-            ) : (
-              <Badge variant="destructive" className="bg-red-500 text-white">Draft</Badge>
-            )}
-          </CardTitle>
-        </CardHeader>
-        
-        <CardContent>
-          <CardDescription className="flex items-center justify-between text-sm text-muted-foreground mb-2">
-            <span>{formatDistance(new Date(createdAt), new Date(), { addSuffix: true })}</span>
-            {published && (
-              <span className="flex items-center gap-3">
-                <div className="flex items-center gap-1">
-                  <LuView className="text-blue-500" />
-                  <span>{visits.toLocaleString()}</span>
-                </div>
-                <div className="flex items-center gap-1">
-                  <FaWpforms className="text-yellow-500" />
-                  <span>{submission_count.toLocaleString()}</span>
-                </div>
-              </span>
-            )}
-          </CardDescription>
-          
-          <p className="text-base text-muted-foreground mb-2">{description}</p>
+    return(
+      <Card className="shadow-md hover:shadow-lg transition-shadow duration-200">
+    <CardHeader>
+      <CardTitle className="flex items-center justify-between gap-2">
+        <span className="font-bold text-xl truncate">{name}</span>
+        {published ? (
+          <Badge className="bg-green-500 text-white">Published</Badge>
+        ) : (
+          <Badge className="bg-red-500 text-white">Draft</Badge>
+        )}
+      </CardTitle>
+    </CardHeader>
+
+    <CardContent>
+      <CardDescription className="flex items-center justify-between text-sm text-muted-foreground mb-3">
+        <span>{formatDistance(new Date(createdAt), new Date(), { addSuffix: true })}</span>
+        {published && (
+          <div className="flex items-center gap-4">
+            <div className="flex items-center gap-2">
+              <LuView className="text-blue-500" />
+              <span>{visits.toLocaleString()}</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <FaWpforms className="text-yellow-500" />
+              <span>{submission_count.toLocaleString()}</span>
+            </div>
+          </div>
+        )}
+      </CardDescription>
+
+      <p className="text-base text-muted-foreground mb-3">
+        {description}
+      </p>
+
+      {published ? (
+        <Link 
+          href={`/forms/${id}`} 
+          target="_blank" 
+          rel="noopener noreferrer" 
+          className="flex items-center gap-2 text-sm text-blue-500 hover:underline"
+        >
+          View Submissions 
+          <BiRightArrowAlt />
+        </Link>
+      ) : (
+        <Button className="w-full mt-4 gap-2"variant={"secondary"}>
           <Link 
-            href={`/forms/${id}`} 
-            target="_blank" 
-            rel="noopener noreferrer" 
-            className="text-sm text-blue-500 hover:underline">
-            View Form
+            href={`/builder/${id}`} 
+            className="flex items-center gap-2 text-sm text-blue-500 hover:underline"
+          >
+            Edit Form 
+            <FaEdit />
           </Link>
-        </CardContent>
-      </Card>
+        </Button>
+      )}
+    </CardContent>
+  </Card>
     );
   }
   

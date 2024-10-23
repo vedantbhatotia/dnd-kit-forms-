@@ -12,6 +12,7 @@ from "@/components/ui/dialog"
 import {BsFileEarmarkPlus} from "react-icons/bs";
 import {ImSpinner2} from "react-icons/im";
 import { Button } from './ui/button';
+import { useRouter } from "next/navigation";
 import{
     Form,
     FormControl,
@@ -35,6 +36,8 @@ const formSchema = z.object({
 })
 type FormSchema = z.infer<typeof formSchema>
 function CreateFormButton() {
+    const router = useRouter();
+
     const form = useForm<z.infer<typeof formSchema>>({
         resolver:zodResolver(formSchema),
         defaultValues:{
@@ -49,6 +52,7 @@ function CreateFormButton() {
                 title:"Form Created",
                 description:"Your form has been created",
             })
+            router.push(`/builder/${CreatedFormId}`);
             console.log(CreatedFormId);
         }
         catch(error){
