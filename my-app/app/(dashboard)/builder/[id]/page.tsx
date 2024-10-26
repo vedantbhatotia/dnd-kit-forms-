@@ -1,4 +1,5 @@
 import { GetFormById } from "@/actions/form";
+import FormBuilder from "@/components/FormBuilder";
 async function BuilderPage({params}:{params:{id:string}}){
     const {id} = params;
     const form:any = await GetFormById(Number(id));
@@ -11,7 +12,7 @@ async function BuilderPage({params}:{params:{id:string}}){
     }
     return(
         <>
-        {form.name}
+       <FormBuilder form={form}/>
         </>
     )
 }
