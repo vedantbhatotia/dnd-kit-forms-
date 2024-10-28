@@ -1,8 +1,14 @@
 "use client"
 import React from "react";
 import DesignerSideBar from "./DesignerSideBar";
-
+import { useDroppable } from "@dnd-kit/core";
 function Designer() {
+    const droppable = useDroppable({
+        id: "designer-drop-area",
+        data: {
+            isDesignerDropArea: true,
+        }, 
+    });
     return (
         <div className="flex w-full h-full gap-6">
             {/* Main Design Area */}
