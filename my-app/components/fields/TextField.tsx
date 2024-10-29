@@ -1,11 +1,7 @@
 "use client"
-
-import { TbPlaceholder } from "react-icons/tb";
 import { ElementsType, FormElement } from "../FormElements"
 import { MdTextFields } from "react-icons/md";
-
 const type:ElementsType = "TextField";
-
 export const TextFieldFormElement:FormElement={
     type,
     construct:(id:string)=>({

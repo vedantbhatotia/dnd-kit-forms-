@@ -1,5 +1,4 @@
 import { TextFieldFormElement } from "./fields/TextField";
-
 export type ElementsType = "TextField";
 export type FormElement = {
     type:ElementsType,
@@ -21,6 +20,5 @@ type FormElementsType = {
     [key in ElementsType]:FormElement
 }
 export const FormElements:FormElementsType = {
-    // <template></template>
     TextField:TextFieldFormElement
 }
