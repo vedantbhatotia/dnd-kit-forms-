@@ -4,7 +4,7 @@ export type FormElement = {
     type:ElementsType,
     construct:(id:string)=>FormElementInstance,
     designerButtonElement:{
-        icon:React.ReactElement,
+        icon:React.ElementType,
         label:string,
     },
     designerComponent:React.FC,

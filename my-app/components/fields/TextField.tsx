@@ -16,7 +16,7 @@ export const TextFieldFormElement:FormElement={
         }
     }),
     designerButtonElement:{
-        icon:<MdTextFields></MdTextFields>,
+        icon:MdTextFields,
         label:"Text Field"
     },
     designerComponent:()=><div>TextField</div>,
