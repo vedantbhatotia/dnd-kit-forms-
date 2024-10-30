@@ -6,6 +6,7 @@ import './globals.css'
 import { ClerkProvider } from "@clerk/nextjs";
 import { ThemeProvider } from "@/components/providers/ThemeProvider";
 import { Toaster } from "@/components/ui/toaster";
+import DesignerContextProvider from "@/components/context/DesignerContext";
 
 // const geistSans = localFont({
 //   src: "../fonts/GeistVF.woff",
@@ -28,10 +29,12 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <ClerkProvider>
       <html lang="en">
         <body>
+          <DesignerContextProvider>
           <ThemeProvider defaultTheme="system" enableSystem={true} attribute="class">
             <main>{children}</main>
             <Toaster></Toaster>
           </ThemeProvider>
+          </DesignerContextProvider>
         </body>
       </html>
     </ClerkProvider>
