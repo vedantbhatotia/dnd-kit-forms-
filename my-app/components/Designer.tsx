@@ -6,6 +6,8 @@ import { cn } from "@/lib/utils"
 import useDesigner  from "./hooks/useDesigner"
 import { ElementsType, FormElementInstance, FormElements } from "./FormElements"
 import {idGenerator}  from "@/lib/idGenerator"
+import { Button } from "./ui/button"
+import { BiSolidTrash } from "react-icons/bi"
 function Designer() {
     const {elements, addElement} = useDesigner();
     const { isOver, setNodeRef } = useDroppable({
@@ -49,7 +51,7 @@ function Designer() {
                         </div>
                     )}
                     {elements.length>0 && (
-                        <div className="flex flex-col text-background w-full gap-2 p-4">
+                        <div className="flex flex-col w-full gap-2 p-4">
                             {/* <div className="h-[120px] rounded-md bg-primary/20"></div> */}
                             {elements.map((element, index) => {
                                 return(
@@ -65,8 +67,59 @@ function Designer() {
     )
 }
 const DesignerWrapperElement = ({ element }: { element: FormElementInstance }) => {
-    const DesignerComponent = FormElements[element.type].designerComponent;
-    return <DesignerComponent />;
-};
+    const { removeElement } = useDesigner(); 
+    const [mouseIsOver,setMouseIsOver] = React.useState<boolean>(false);
 
+    const DesignerComponent = FormElements[element.type].designerComponent;
+    const topHalf = useDroppable({
+        id:element.id + "-top",
+        data:{
+            type:element.type,
+            elementId:element.id,
+            isTopHalfDesignerElement:true,
+
+        }
+    })
+    const bottomHalf = useDroppable({
+        id:element.id + "-bottom",
+        data:{
+            type:element.type,
+            elementId:element.id,
+            isBottomHalfDesignerElement:true,
+
+        }
+    })
+    return(
+        <div className="relative h-[120px] flex flex-col text-foreground hover:cursor-pointer rounded-md ring-1 ring-accent ring-inset" onMouseEnter={()=>setMouseIsOver(true)} onMouseLeave={()=>setMouseIsOver(false)}>
+        <div ref={topHalf.setNodeRef} className="absolute w-full h-1/2 rounded-t-md"></div>
+        <div  ref={bottomHalf.setNodeRef} className="absolute  bottom-0 w-full h-1/2 rounded-b-md"></div>
+        {
+            mouseIsOver && (
+                <>
+                <div className="absolute right-0 h-full">
+                    <Button className="flex justify-center h-full border rounded-md rounded-l-none bg-red-500" variant={"outline"}
+                    onClick={()=>{
+                        removeElement(element.id);
+                        console.log("Delete element");
+                    }}
+                    >
+                        <BiSolidTrash className="h-6 w-6">
+
+                        </BiSolidTrash>
+                    </Button>
+                </div>
+                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 animate-pulse">
+                    <p className="text-muted-foreground text-sm">
+                        Drag and drop to reorder
+                    </p>
+                </div>
+                </>
+            )
+        }
+        <div className="flex w-full h-[120px] items-center rounded-md bg-accent/40 px-4 py-2 pointer-events-none">
+        <DesignerComponent elementInstance={element}/>
+        </div>
+        </div>
+    ) 
+};
 export default Designer

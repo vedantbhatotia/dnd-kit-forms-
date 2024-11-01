@@ -7,7 +7,14 @@ export type FormElement = {
         icon:React.ElementType,
         label:string,
     },
-    designerComponent:React.FC,
+    designerComponent:React.FC<{
+        elementInstance:FormElementInstance,
+        // updateElement:(id:string,update:Partial<FormElementInstance>)=>void,
+        // dragOverHandler:(e:React.DragEvent<HTMLDivElement>)=>void,
+        // dragLeaveHandler:(e:React.DragEvent<HTMLDivElement>)=>void,
+        // dragEndHandler:(e:React.DragEvent<HTMLDivElement>)=>void,
+        // dropHandler:(e:React.DragEvent<HTMLDivElement>)=>void,
+    }>,
     formComponent:React.FC,
     propertiesComponent:React.FC,
 }
