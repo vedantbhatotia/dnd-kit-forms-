@@ -1,7 +1,7 @@
 "use client"
 import React from "react"
 import DesignerSideBar from "./DesignerSideBar"
-import { DragEndEvent, useDndMonitor, useDroppable } from "@dnd-kit/core"
+import { DragEndEvent, useDndMonitor, useDraggable, useDroppable } from "@dnd-kit/core"
 import { cn } from "@/lib/utils"
 import useDesigner  from "./hooks/useDesigner"
 import { ElementsType, FormElementInstance, FormElements } from "./FormElements"
@@ -89,8 +89,16 @@ const DesignerWrapperElement = ({ element }: { element: FormElementInstance }) =
 
         }
     })
+    const draggable = useDraggable({
+        id:element.id+"-drag-handler",
+        data:{
+            type:element.type,
+            elementId:element.id,
+            isDesignerElement:true,
+        }
+    })
     return(
-        <div className="relative h-[120px] flex flex-col text-foreground hover:cursor-pointer rounded-md ring-1 ring-accent ring-inset" onMouseEnter={()=>setMouseIsOver(true)} onMouseLeave={()=>setMouseIsOver(false)}>
+        <div  ref={draggable.setNodeRef} {...draggable.listeners} {...draggable.attributes} className="relative h-[120px] flex flex-col text-foreground hover:cursor-pointer rounded-md ring-1 ring-accent ring-inset" onMouseEnter={()=>setMouseIsOver(true)} onMouseLeave={()=>setMouseIsOver(false)}>
         <div ref={topHalf.setNodeRef} className="absolute w-full h-1/2 rounded-t-md"></div>
         <div  ref={bottomHalf.setNodeRef} className="absolute  bottom-0 w-full h-1/2 rounded-b-md"></div>
         {
@@ -116,7 +124,9 @@ const DesignerWrapperElement = ({ element }: { element: FormElementInstance }) =
                 </>
             )
         }
-        <div className="flex w-full h-[120px] items-center rounded-md bg-accent/40 px-4 py-2 pointer-events-none">
+        <div className={cn("flex w-full h-[120px] items-center rounded-md bg-accent/40 px-4 py-2 pointer-events-none opacity-100",
+            mouseIsOver && "opacity-30",
+        )}>
         <DesignerComponent elementInstance={element}/>
         </div>
         </div>
