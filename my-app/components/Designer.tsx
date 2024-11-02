@@ -41,7 +41,7 @@ function Designer() {
                     )}
                 >
                     {!isOver && elements.length === 0 ? (
-                        <p className="text-3xl text-muted-foreground font-bold">
+                        <p className="text-3xl text-muted-foreground font-bold flex flex-grow items-center">
                             Drop Here
                         </p>
                     ) : (
@@ -97,6 +97,10 @@ const DesignerWrapperElement = ({ element }: { element: FormElementInstance }) =
             isDesignerElement:true,
         }
     })
+    if(draggable.isDragging){
+        return null;
+    }
+    
     return(
         <div  ref={draggable.setNodeRef} {...draggable.listeners} {...draggable.attributes} className="relative h-[120px] flex flex-col text-foreground hover:cursor-pointer rounded-md ring-1 ring-accent ring-inset" onMouseEnter={()=>setMouseIsOver(true)} onMouseLeave={()=>setMouseIsOver(false)}>
         <div ref={topHalf.setNodeRef} className="absolute w-full h-1/2 rounded-t-md"></div>
@@ -124,11 +128,23 @@ const DesignerWrapperElement = ({ element }: { element: FormElementInstance }) =
                 </>
             )
         }
+        {
+            topHalf.isOver && (
+                <div className="absolute top-0 w-full rounded-md h-[7px] bg-primary
+                rounded-b-none"></div>
+            )
+        }
         <div className={cn("flex w-full h-[120px] items-center rounded-md bg-accent/40 px-4 py-2 pointer-events-none opacity-100",
-            mouseIsOver && "opacity-30",
+            mouseIsOver && "opacity-30"
         )}>
         <DesignerComponent elementInstance={element}/>
         </div>
+        {
+            bottomHalf.isOver && (
+                <div className="absolute bottom-0 w-full rounded-md h-[7px] bg-primary
+                rounded-t-none"></div>
+            )
+        }
         </div>
     ) 
 };
