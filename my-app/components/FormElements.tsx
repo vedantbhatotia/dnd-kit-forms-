@@ -16,7 +16,9 @@ export type FormElement = {
         // dropHandler:(e:React.DragEvent<HTMLDivElement>)=>void,
     }>,
     formComponent:React.FC,
-    propertiesComponent:React.FC,
+    propertiesComponent:React.FC<{
+        elementInstance:FormElementInstance
+    }>,
 }
 export type FormElementInstance = {
     id:string,

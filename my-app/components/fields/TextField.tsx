@@ -24,7 +24,7 @@ export const TextFieldFormElement:FormElement={
     },
     designerComponent:DesignerComponent,
     formComponent:()=><div>TextField</div>,
-    propertiesComponent:()=><div>TextField</div>,
+    propertiesComponent:PropertiesComponent,
 }
 type CustomInstance = FormElementInstance & {
     extraAttributes:typeof extraAttributes
@@ -46,6 +46,14 @@ function DesignerComponent({elementInstance}:{
             {/* {element.extraAttributes.label} */}
             {helperText && <p className="text-muted-foreground text-sm">{helperText}</p>}
         </div>,
+        </>
+    )
+}
+function PropertiesComponent({elementInstance}:{elementInstance:FormElementInstance}){
+    const element = elementInstance as CustomInstance
+    return(
+        <>
+        Form propeties form {element.extraAttributes.label}
         </>
     )
 }

@@ -9,7 +9,7 @@ import {idGenerator}  from "@/lib/idGenerator"
 import { Button } from "./ui/button"
 import { BiSolidTrash } from "react-icons/bi"
 function Designer() {
-    const {elements, addElement} = useDesigner();
+    const {elements, addElement,selectedElement,setSelectedElement} = useDesigner();
     const { isOver, setNodeRef } = useDroppable({
         id: "designer-drop-area",
         data: { isDesignerDropArea: true },
@@ -32,7 +32,11 @@ function Designer() {
     })
     return (
         <div className="flex w-full h-full gap-4">
-            <div className="p-4 w-full">
+            <div className="p-4 w-full" onClick={()=>{
+                if(selectedElement){
+                    setSelectedElement(null)
+                }
+            }}>
                 <div
                     ref={setNodeRef}
                     className={cn(
@@ -67,7 +71,7 @@ function Designer() {
     )
 }
 const DesignerWrapperElement = ({ element }: { element: FormElementInstance }) => {
-    const { removeElement } = useDesigner(); 
+    const { removeElement,selectedElement,setSelectedElement} = useDesigner(); 
     const [mouseIsOver,setMouseIsOver] = React.useState<boolean>(false);
 
     const DesignerComponent = FormElements[element.type].designerComponent;
@@ -102,7 +106,12 @@ const DesignerWrapperElement = ({ element }: { element: FormElementInstance }) =
     }
     
     return(
-        <div  ref={draggable.setNodeRef} {...draggable.listeners} {...draggable.attributes} className="relative h-[120px] flex flex-col text-foreground hover:cursor-pointer rounded-md ring-1 ring-accent ring-inset" onMouseEnter={()=>setMouseIsOver(true)} onMouseLeave={()=>setMouseIsOver(false)}>
+        <div  ref={draggable.setNodeRef} {...draggable.listeners} {...draggable.attributes} className="relative h-[120px] flex flex-col text-foreground hover:cursor-pointer rounded-md ring-1 ring-accent ring-inset" onMouseEnter={()=>setMouseIsOver(true)} onMouseLeave={()=>setMouseIsOver(false)}
+        onClick={(e)=>{
+            setSelectedElement(element)
+            e.stopPropagation();
+        }
+        }>
         <div ref={topHalf.setNodeRef} className="absolute w-full h-1/2 rounded-t-md"></div>
         <div  ref={bottomHalf.setNodeRef} className="absolute  bottom-0 w-full h-1/2 rounded-b-md"></div>
         {
@@ -110,7 +119,8 @@ const DesignerWrapperElement = ({ element }: { element: FormElementInstance }) =
                 <>
                 <div className="absolute right-0 h-full">
                     <Button className="flex justify-center h-full border rounded-md rounded-l-none bg-red-500" variant={"outline"}
-                    onClick={()=>{
+                    onClick={(e)=>{
+                        e.stopPropagation()
                         removeElement(element.id);
                         console.log("Delete element");
                     }}
