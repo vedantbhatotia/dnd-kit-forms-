@@ -9,7 +9,7 @@ import {idGenerator}  from "@/lib/idGenerator"
 import { Button } from "./ui/button"
 import { BiSolidTrash } from "react-icons/bi"
 function Designer() {
-    const {elements, addElement,selectedElement,setSelectedElement} = useDesigner();
+    const {elements, addElement,selectedElement,setSelectedElement,removeElement} = useDesigner();
     const { isOver, setNodeRef } = useDroppable({
         id: "designer-drop-area",
         data: { isDesignerDropArea: true },
@@ -21,12 +21,50 @@ function Designer() {
                 return;
             }
             const isDesignerBtnElement = active.data.current?.isDesignerBtnElement;
-            if(isDesignerBtnElement){
+
+            const isDroppingOverDesignerDropArea = over.data.current?.isDesignerDropArea;
+
+            if(isDesignerBtnElement && isDroppingOverDesignerDropArea){
                 const type = active.data.current?.type;
                 const newElement = FormElements[type as ElementsType].construct(
                     idGenerator()
                 )
-                addElement(0,newElement)
+                addElement(elements.length,newElement);
+                return;
+            }
+            const isDroppingOverDesignerElementTopHalf = over.data?.current?.isTopHalfDesignerElement ;
+            const isDroppingOverDesignerElementBottomHalf = over.data?.current?.isBottomHalfDesignerElement;
+            const isDroppingOverDesignerElement = isDroppingOverDesignerElementTopHalf || isDroppingOverDesignerElementBottomHalf;
+            const droppingSideBarBtnOverDesignerElement = isDesignerBtnElement && isDroppingOverDesignerElement;
+
+            if(droppingSideBarBtnOverDesignerElement){
+                const type = active.data.current?.type;
+                const newElement = FormElements[type as ElementsType].construct(
+                    idGenerator()
+                )
+                const overId = over.data?.current?.elementId;
+                const overElementIndex = elements.findIndex((element) => element.id === overId);
+                if(overElementIndex === -1){
+                    return;
+                }
+                const indexForNewElement = overElementIndex + (isDroppingOverDesignerElementTopHalf ? 0 : 1);
+                addElement(indexForNewElement,newElement);
+                return;
+            }
+            const isDraggingDesignerElement = active.data.current?.isDesignerElement;
+            const draggingOverOtherDesignerElement = isDroppingOverDesignerElement && isDraggingDesignerElement
+            if(draggingOverOtherDesignerElement){
+                const activeId = active.data.current?.elementId;
+                const overId = over.data.current?.elementId;
+                const activeElementIndex = elements.findIndex((element) => element.id === activeId);
+                const overElementIndex = elements.findIndex((element) => element.id === overId);
+                if(activeElementIndex === -1 || overElementIndex === -1){
+                    return;
+                }
+                const indexForNewElement = overElementIndex + (isDroppingOverDesignerElementTopHalf ? 0 : 1);
+                const activeElement = {... elements[activeElementIndex]};
+                removeElement(activeId);
+                addElement(indexForNewElement,activeElement);
             }
         }
     })
