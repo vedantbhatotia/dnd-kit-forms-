@@ -15,7 +15,14 @@ export type FormElement = {
         // dragEndHandler:(e:React.DragEvent<HTMLDivElement>)=>void,
         // dropHandler:(e:React.DragEvent<HTMLDivElement>)=>void,
     }>,
-    formComponent:React.FC,
+    formComponent:React.FC<{
+        elementInstance:FormElementInstance,
+        // updateElement:(id:string,update:Partial<FormElementInstance>)=>void,
+        // dragOverHandler:(e:React.DragEvent<HTMLDivElement>)=>void,
+        // dragLeaveHandler:(e:React.DragEvent<HTMLDivElement>)=>void,
+        // dragEndHandler:(e:React.DragEvent<HTMLDivElement>)=>void,
+        // dropHandler:(e:React.DragEvent<HTMLDivElement>)=>void,
+    }>,
     propertiesComponent:React.FC<{
         elementInstance:FormElementInstance
     }>,
