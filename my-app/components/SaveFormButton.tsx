@@ -4,7 +4,7 @@ import useDesigner from "./hooks/useDesigner";
 import { UpdateFormContent } from "@/actions/form";
 import { useTransition } from "react";
 import { FaSpinner } from "react-icons/fa";
-function SaveFormButton({id}:{id:number} ) {
+function SaveFormButton({id}:{id:number}  ) {
   const { elements} = useDesigner();
   const [loading,startTransition] = useTransition();
   const updateFormContent = async () => {

@@ -117,6 +117,25 @@ async function UpdateFormContent(id:number,jsonContent:string){
     }
 
 }
+async function PublishForm(id:number){
+    const user = await currentUser();
+    if(!user){
+        return {
+            error:"User notfound"
+            }
+    }else{
+        return prisma.form.update({
+            where:{
+                id:id,
+                userId:user.id
+            },
+            data:{
+                published:true
+            }
+        })
+    }
+}
+export {PublishForm}
 export {UpdateFormContent}
 export {GetFormById}
 export {GetForm}

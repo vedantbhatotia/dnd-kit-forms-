@@ -8,6 +8,12 @@ import { DndContext, MouseSensor,TouchSensor,useSensor, useSensors } from "@dnd-
 import DragOverlayWrapper from "./DragOverlayWrapper"
 import useDesigner  from "./hooks/useDesigner"
 import { useEffect, useState } from "react"
+import { ImSpinner2 } from "react-icons/im"
+import { Input } from "./ui/input"
+import { Button } from "./ui/button"
+import { link } from "fs"
+import { BsArrowLeft, BsArrowRight } from "react-icons/bs"
+import Link from "next/link"
 function FormBuilder({ form }: { form: Form }) {
     const {setElements,setSelectedElement} = useDesigner();
     const [isReady,setIsReady] = useState(false);
@@ -33,10 +39,62 @@ function FormBuilder({ form }: { form: Form }) {
         const readyTimeout = setTimeout(()=>setIsReady(true),500)
         return ()=>clearTimeout(readyTimeout)
     },[form,setElements])
+
     if(!isReady){
-        return
-        <div>
-        </div>
+        return(
+            <div>
+            <ImSpinner2 className="animate-spin h-12 w-12"></ImSpinner2>
+            </div>
+        )
+    }
+    const shareUrl = `${window.location.protocol}/submit/${form.shareUrl}`
+
+    if(form.published){
+        return(
+            <>
+                <div className="flex flex-col items-center justify-center h-full w-full">
+                    <div className="max-w-md">
+                        <h1 className="text-center text-4xl font-bold text-primary border-b pb-2 mb-10">
+                            FORM PUBLISHED
+                        </h1>
+                        <h2 className="text-2xl">
+                            Share this form 
+                        </h2>
+                        <h3 className="text-xl text-muted-foreground border-b pb-10">
+                            Anyone can view this form by visiting this link:
+                        </h3>
+                        <div className="my-4 flex flex-col gap-2 items-center w-full border-b pb-4">
+                            <Input className="w-full" readOnly value={shareUrl}>
+                            </Input>
+                            <Button className="mt-2 w-full " onClick={()=>{
+                                navigator.clipboard.writeText(shareUrl)
+                            }}>
+                                Copy Link
+                            </Button>
+                        </div>
+                        <div className="flex justify-between">
+                            <Button variant={"link"} asChild>
+                                {/* Back to Forms */}
+                                <Link href={'/'} className="gap-2">
+                                {/* <span clas */}
+                                    <BsArrowLeft></BsArrowLeft>
+                                    Back to Forms
+                                </Link>
+                            </Button>
+                            <Button variant={"link"} asChild>
+                                {/* Back to Forms */}
+                                <Link href={`/forms/${form.id}`} className="gap-2">
+                                {/* <span clas */}
+                                    {/* <BsArrowLeft></BsArrowLeft> */}
+                                    Form Details
+                                    <BsArrowRight></BsArrowRight>
+                                </Link>
+                            </Button>
+                        </div>
+                    </div>
+                </div>
+            </>
+        )
     }
     return (
         <DndContext sensors={sensors}>
@@ -53,7 +111,7 @@ function FormBuilder({ form }: { form: Form }) {
                         {!form.published && (
                             <>
                                 <SaveFormButton id = {form.id} />
-                                <PublishedFormButton />
+                                <PublishedFormButton id = {form.id}/>
                             </>
                         )}
                     </div>
