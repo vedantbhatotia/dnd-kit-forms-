@@ -10,6 +10,7 @@ import useDesigner  from "./hooks/useDesigner"
 import { useEffect, useState } from "react"
 import { ImSpinner2 } from "react-icons/im"
 import { Input } from "./ui/input"
+import Confetti from "react-confetti"
 import { Button } from "./ui/button"
 import { link } from "fs"
 import { BsArrowLeft, BsArrowRight } from "react-icons/bs"
@@ -52,10 +53,11 @@ function FormBuilder({ form }: { form: Form }) {
     if(form.published){
         return(
             <>
+            <Confetti width={window.innerWidth} height={window.innerHeight} recycle={false} numberOfPieces={1000}></Confetti>
                 <div className="flex flex-col items-center justify-center h-full w-full">
                     <div className="max-w-md">
                         <h1 className="text-center text-4xl font-bold text-primary border-b pb-2 mb-10">
-                            FORM PUBLISHED
+                            Form Published
                         </h1>
                         <h2 className="text-2xl">
                             Share this form 
