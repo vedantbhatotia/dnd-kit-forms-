@@ -7,7 +7,8 @@ import { ClerkProvider } from "@clerk/nextjs";
 import { ThemeProvider } from "@/components/providers/ThemeProvider";
 import { Toaster } from "@/components/ui/toaster";
 import DesignerContextProvider from "@/components/context/DesignerContext";
-
+// import NextToploader from "nextjs-toploader";
+import NextTopLoader from "nextjs-toploader";
 // const geistSans = localFont({
 //   src: "../fonts/GeistVF.woff",
 //   variable: "--font-geist-sans",
@@ -29,12 +30,14 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <ClerkProvider>
       <html lang="en">
         <body>
+          <NextTopLoader>
           <DesignerContextProvider>
           <ThemeProvider defaultTheme="system" enableSystem={true} attribute="class">
             <main>{children}</main>
             <Toaster></Toaster>
           </ThemeProvider>
           </DesignerContextProvider>
+          </NextTopLoader>
         </body>
       </html>
     </ClerkProvider>
